@@ -6,7 +6,8 @@
     "homepage": "https://github.com/maalls/logistic-map",
     "license": "MIT",
     "require": {
-        "lunakid/anim-gif": "dev-main"
+        "lunakid/anim-gif": "dev-main",
+        "twig/twig": "^3.0"
     },
     "repositories": [{
         "type": "vcs",

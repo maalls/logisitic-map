@@ -1,8 +1,3 @@
-<?php 
-
-  include __DIR__ . '/backend.php';
-
-?>
 <!doctype html>
 
 <html lang="en">
@@ -28,19 +23,27 @@
 
 </head>
 <style>
-  .scroll {
-    overflow: scroll;
-  }
+ s
 </style>
 <body>
   <div> 
-    <form>
-      r = <input type="text" name='r' id='resource' /> x = <span id='xValue'></span>
+    <form id='form'>
+      r start = <input value='{{ form.rMin }}' type="text" name='rMin' id='rMin' />  
+      r end = <input value='{{ form.rMax }}' type="text" name='rMax' id='rMax' /> 
+      <input type='submit' /><br/>
+      step = <span id='step'>{{ form.step }}</span>
+      r = <span id='x1'></span>, <span id='x2'></span>,
+      x = <span id='y1'></span> ,<span id='y2'></span> 
       
     </form>
   </div>
   <div class="scroll" id='scroll'>
-    <img id='map' src='data/<?php echo basename($filename) ?>' style='' />
+    
+    <img 
+      data-step={{ form.step }} 
+      data-rMin={{ form.rMin }}
+      id='map' src='{{ filename }}' style='z-index: 1;border: 1px solid blue;' />
+      <div id="select" style='z-index: 2;' hidden></div>
   </div>
 
   <script

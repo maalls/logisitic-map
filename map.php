@@ -4,6 +4,6 @@ require __DIR__ . '/vendor/autoload.php';
 
 
 
-$map = new Maalls\LogisticMap();
+$map = new Maalls\LogisticMap(3.545, 3.65);
 
-$map->generate(3.545, 3.65, 0.001);
+$map->generate();

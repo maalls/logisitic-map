@@ -3,18 +3,41 @@ namespace Maalls;
 
 class LogisticMap {
 
+	public $step;
+	public $rMin;
+	public $rEnd;
+	public $filename;
 
-	public function generate($rStart = 2, $rMax = 4, $step = 0.01)
+	public function __construct($rMin = 2, $rMax = 4, $xMin = null, $xMax = null, $step = null)
+	{
+
+		$this->imageWidth = 1000;
+		$this->imageHeight = 1000;
+
+		$this->xMin = $xMin;
+		$this->xMax = $xMax;
+
+		
+
+		
+		if(!$step) {
+
+			$range = $rMax - $rMin;
+			$this->step = $range / $this->imageWidth;
+
+		}
+		else {
+			$this->step = $step;
+		}
+		$this->rMin = $rMin;
+		$this->rMax = $rMax;
+
+	}
+	public function generate()
 	{
 
 		$width = 220;
-		$height = 700;
-
-		$max = 200;
-
-
-
-		$r = $rStart;
+		$r = $this->rMin;
 		$logisticMap = [];
 
 		
@@ -34,16 +57,20 @@ class LogisticMap {
 		$minX = 100000000;
 		$maxX = 0;
 
+		$max = 400;
+		bcscale(20);
 		do {
 
-			$x = 0.2;
+			echo 'r ' . $r . PHP_EOL;
+			$x = '0.2';
 			$asymptoticValues = [];
 			for($i = 0; $i < $max; $i++) {
+				
+				$x = bcmul($r, bcmul($x, bcsub('1', $x)));
+				$minX = bccomp($x, $minX) > 0 ? $minX : $x;
+				$maxX = bccomp($x, $maxX) > 0 ? $x : $maxX;
 
-
-				$x = $r * $x * (1 - $x);
-				$minX = min($x, $minX);
-				$maxX = max($x, $maxX);
+				if($maxX == 0) exit;
 
 				if($i > 100) {
 
@@ -56,33 +83,35 @@ class LogisticMap {
 			}
 
 			$logisticMap[] = [$r, $asymptoticValues];
-			$r += $step;
+			$r += $this->step;
 
 		}
-		while($r <= $rMax);
+		while($r <= $this->rMax);
 
-		$gd = imagecreatetruecolor(($rMax - $rStart) / $step, $height);
+		$gd = imagecreatetruecolor($this->imageWidth, $this->imageHeight);
 		$red = imagecolorallocate($gd, 255, 0, 0); 
 		$white = imagecolorallocate($gd, 255, 255, 255);
 		imagefill($gd, 0, 0, $white);
+		
 		$xRange = $maxX - $minX;
-		$heightPixelRatio = floor($height / $xRange);
+		$heightPixelRatio = floor($this->imageHeight / $xRange);
 
 		foreach($logisticMap as $i => $x) {
 
 			foreach($x[1] as $x) {
 
-				imagesetpixel($gd, $i, round($height - ($x - $minX) * $heightPixelRatio), $red);
+				imagesetpixel($gd, $i, round($this->imageHeight - ($x - $minX) * $heightPixelRatio), $red);
 
 
 			}
 
 		}
 
-		$path = __DIR__ . '/../data/logistic_maps_' . $rStart . '-' . $rMax . '-' . $step . '.jpg' ;
+		$path = __DIR__ . '/../public/data/logistic_maps_' . $this->rMin . '-' . $this->rMax . '-' . $this->step . '.jpg' ;
 
 		imagejpeg($gd, $path);
 
+		$this->filename = $path;
 		return $path;
 
 	}

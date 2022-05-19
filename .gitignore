@@ -1,3 +1,5 @@
+
+/cache
 /vendor
 .DS_Store
-/data
+/public/data
