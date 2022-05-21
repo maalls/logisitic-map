@@ -65,7 +65,7 @@ class LogisticMap {
 		$minX = 100000000;
 		$maxX = 0;
 
-		$max = 50000;
+		$max = 5000;
 		/*$scale = 14;
 		bcscale($scale);*/
 		do {
@@ -82,9 +82,8 @@ class LogisticMap {
 				$minX = min($x, $minX);
 				$maxX = max($x, $maxX);
 
-				if($maxX == 0) exit;
 
-				if($i > 48000) {
+				if($i > 4800) {
 
 					if(!in_array($x, $asymptoticValues)) {
 						$asymptoticValues[] = $x;

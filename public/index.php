@@ -6,8 +6,8 @@ use Maalls\Http\Request;
 $request = new Request();
 
 $params = $_GET;
-$rMin = $request->get('rMin');
-$rMax = $request->get('rMax');
+$rMin = $request->get('rMin', 2);
+$rMax = $request->get('rMax', 4);
 $xMin = $request->get('yMin');
 $xMax = $request->get('yMax');
 $map = new Maalls\LogisticMap($rMin, $rMax, $xMin, $xMax);
