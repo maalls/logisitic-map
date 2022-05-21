@@ -17,6 +17,8 @@ class LogisticMap {
 		$this->xMin = $xMin;
 		$this->xMax = $xMax;
 
+
+
 		
 
 		
@@ -35,6 +37,12 @@ class LogisticMap {
 	}
 	public function generate()
 	{
+
+		$path = __DIR__ . '/../public/data/logistic_maps_' . $this->rMin . '-' . $this->xMin . '-' . $this->step . '.jpg' ;
+
+		$this->filename = $path; 
+
+		
 
 		$width = 220;
 		$r = $this->rMin;
@@ -57,22 +65,26 @@ class LogisticMap {
 		$minX = 100000000;
 		$maxX = 0;
 
-		$max = 400;
-		bcscale(20);
+		$max = 50000;
+		/*$scale = 14;
+		bcscale($scale);*/
 		do {
 
-			echo 'r ' . $r . PHP_EOL;
+			//echo 'r ' . $r . PHP_EOL;
 			$x = '0.2';
 			$asymptoticValues = [];
 			for($i = 0; $i < $max; $i++) {
 				
-				$x = bcmul($r, bcmul($x, bcsub('1', $x)));
+				/*$x = bcmul($r, bcmul($x, bcsub('1', $x)));
 				$minX = bccomp($x, $minX) > 0 ? $minX : $x;
-				$maxX = bccomp($x, $maxX) > 0 ? $x : $maxX;
+				$maxX = bccomp($x, $maxX) > 0 ? $x : $maxX;*/
+				$x = $r * $x * (1 - $x);
+				$minX = min($x, $minX);
+				$maxX = max($x, $maxX);
 
 				if($maxX == 0) exit;
 
-				if($i > 100) {
+				if($i > 48000) {
 
 					if(!in_array($x, $asymptoticValues)) {
 						$asymptoticValues[] = $x;
@@ -88,26 +100,34 @@ class LogisticMap {
 		}
 		while($r <= $this->rMax);
 
+		if(!$this->xMin && !$this->xMax) {
+		
+			$this->xMin = $minX;
+			$this->xMax = $maxX;
+		
+		}
+		
+
 		$gd = imagecreatetruecolor($this->imageWidth, $this->imageHeight);
 		$red = imagecolorallocate($gd, 255, 0, 0); 
 		$white = imagecolorallocate($gd, 255, 255, 255);
 		imagefill($gd, 0, 0, $white);
 		
-		$xRange = $maxX - $minX;
+		$xRange = $this->xMax - $this->xMin;
 		$heightPixelRatio = floor($this->imageHeight / $xRange);
 
 		foreach($logisticMap as $i => $x) {
 
 			foreach($x[1] as $x) {
 
-				imagesetpixel($gd, $i, round($this->imageHeight - ($x - $minX) * $heightPixelRatio), $red);
+				imagesetpixel($gd, $i, round($this->imageHeight - ($x - $this->xMin) * $heightPixelRatio), $red);
 
 
 			}
 
 		}
 
-		$path = __DIR__ . '/../public/data/logistic_maps_' . $this->rMin . '-' . $this->rMax . '-' . $this->step . '.jpg' ;
+		
 
 		imagejpeg($gd, $path);
 

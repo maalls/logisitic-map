@@ -17,20 +17,30 @@ $(document).ready(function() {
   var img = new Image();
   var imageHeight;
   var imageWidth;
+  var xRatio;
+
+  var step = parseFloat($('#map').data('step'));
+  var rMin = parseFloat($('#map').data('rmin'));
+  var xMax = parseFloat($('#map').data('xmax'));
+  var xMin = parseFloat($('#map').data('xmin'));
+  var xRange = parseFloat($('#map').data('xmax')) - parseFloat($('#map').data('xmin'));
+
+
+
   img.onload = function(){
       imageHeight = img.height;
       imageWidth = img.width;
-      console.log('dimension', height, width);
+      console.log('dimension', imageHeight, imageWidth);
+
+      console.log(step, rMin, 'xrange', xRange, 'xMax', xMax);
+    
       // code here to use the dimensions
     }
 
   img.src = document.getElementById('map').src;
 
 
-  var step = parseFloat($('#map').data('step'));
-  var rMin = parseFloat($('#map').data('rmin'));
-
-  console.log(step, rMin);
+  
 
   /*$('#map').mousemove(function(event) {
     
@@ -104,9 +114,10 @@ $('#map,#select').mousedown(function(e) {
     x2 = x1;
     y2 = y1;
     reCalc();
-    $('#x1').html(rMin + x1 * step);
-    $('#y1').html(imageHeight - y1 + $('#map').offset().top);
-    $('#rMin').val(rMin + x1 * step);
+    $('#x1').html(calcX(x1));
+    $('#y1').html(calcY(y1));
+    $('#yMax').val(calcY(y1));
+    $('#rMin').val(calcR(x1));
     positionMode = 2;
   }
   else if(positionMode == 2) {
@@ -115,9 +126,11 @@ $('#map,#select').mousedown(function(e) {
     //div.hidden = 1;
     //$('#x2').html(rMin + x2 * step);
     //$('#y2').html(imageHeight - y2 - width + $('#map').offset().top);
-    $('#rMax').val(rMin + x2 * step);
+    $('#rMax').val(calcR(x2));
+    $('#yMin').val(calcY(y2));
+
     positionMode = 1;
-    //$('#form').submit();
+    $('#form').submit();
 
   }
 });
@@ -128,9 +141,21 @@ $('#map,#select').mousemove(function(e) {
     reCalc();
     console.log('calc', positionMode);
     
-      $('#x2').html(rMin + x2 * step);
-      $('#y2').html(imageHeight - y2 - width + $('#map').offset().top);
+      $('#x2').html(calcX(x2));
+      $('#y2').html(calcY(y2));
     }
+    console.log(calcY(e.clientY + window.scrollY))
 });
+function calcR(x) {
+  return rMin + x * step;
+}
+function calcX(x) {
+  return rMin + x * step;
+}
+
+function calcY(y) {
+  //console.log('xratio', xRange);
+  return xMax  - (y + width - $('#map').offset().top) / imageHeight * xRange;
+}
 
 });

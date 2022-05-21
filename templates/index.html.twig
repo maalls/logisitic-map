@@ -29,11 +29,17 @@
   <div> 
     <form id='form'>
       r start = <input value='{{ form.rMin }}' type="text" name='rMin' id='rMin' />  
-      r end = <input value='{{ form.rMax }}' type="text" name='rMax' id='rMax' /> 
+      r end = <input value='{{ form.rMax }}' type="text" name='rMax' id='rMax' /> <br/>
+
+      x min = <input type='text' value='{{ form.xMin }}' name='xMin' id='xMin' />
+      x max = <input type='text' value='{{ form.xMax }}' name='xMax' id='xMax' /><br/>
+
+      y min = <input type='text' value='{{ form.yMin }}' name='yMin' id='yMin' />
+      y max = <input type='text' value='{{ form.yMax }}' name='yMax' id='yMax' /><br/>
       <input type='submit' /><br/>
-      step = <span id='step'>{{ form.step }}</span>
-      r = <span id='x1'></span>, <span id='x2'></span>,
-      x = <span id='y1'></span> ,<span id='y2'></span> 
+      step = <span id='step'>{{ form.step }}</span><br/>
+      r = <span id='x1'></span>, <span id='x2'></span>,<br/>
+      y = <span id='y2'></span> , <span id='y1'></span>
       
     </form>
   </div>
@@ -42,6 +48,8 @@
     <img 
       data-step={{ form.step }} 
       data-rMin={{ form.rMin }}
+      data-xMin={{ form.xMin }}
+      data-xMax={{ form.xMax }}
       id='map' src='{{ filename }}' style='z-index: 1;border: 1px solid blue;' />
       <div id="select" style='z-index: 2;' hidden></div>
   </div>
