@@ -38,9 +38,7 @@ class LogisticMap {
 	public function generate()
 	{
 
-		$path = __DIR__ . '/../public/data/logistic_maps_' . $this->rMin . '-' . $this->xMin . '-' . $this->step . '.jpg' ;
-
-		$this->filename = $path; 
+		
 
 		
 
@@ -126,7 +124,9 @@ class LogisticMap {
 
 		}
 
-		
+		$path = __DIR__ . '/../public/data/logistic_maps_' . $this->rMin . '-' . $this->xMin . '-' . $this->step . '.jpg' ;
+
+		$this->filename = $path; 
 
 		imagejpeg($gd, $path);
 
